@@ -728,7 +728,11 @@ static void _outputStatus( struct SIOInstance *sio, uint64_t oldintervalBytes )
     if ( sio->opTextWline )
     {
         /* We have some opData stored, indicate where we are in it */
-        mvwprintw( sio->statusWindow, 0, 2, " %d%% (%d/%d) ", ( sio->opTextRline * 100 ) / ( sio->opTextWline - 1 ), sio->opTextRline + 1, sio->opTextWline );
+        int32_t denominator = sio->opTextWline - 1;
+        if (denominator == 0) {
+            denominator = 1;
+        }
+        mvwprintw( sio->statusWindow, 0, 2, " %d%% (%d/%d) ", ( sio->opTextRline * 100 ) / denominator, sio->opTextRline + 1, sio->opTextWline );
     }
 
     if ( !sio->amDiving )
