@@ -720,12 +720,18 @@ static bool _loadSource( struct symbol *p )
             store->linetext[store->nlines++] = r;
 
             /* Spin forwards for next newline or eof */
-            while ( ( --l > 0 ) && ( *r++ != '\n' ) ) {};
+            while ( ( l > 0 ) && ( *r != '\n' ) ) {
+                l = l - 1;
+                r = r + 1;
+            };
 
-            if ( l )
+            if ( l > 0 )
             {
-                *r++ = 0;
-                l--;
+                // Overwrite newline with string terminator
+                *r = '\0';
+
+                r = r + 1;
+                l = l - 1;
             }
         }
     }
